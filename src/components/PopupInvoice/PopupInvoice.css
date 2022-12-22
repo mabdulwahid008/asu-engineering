@@ -1,0 +1,52 @@
+.popup, .overlay{
+    height: 100vh;
+    width: 100%;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+}
+.overlay{
+    background-color: rgba(0, 0, 0, 0.272);
+}
+.popup{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.card-popup{
+    width: 40%;
+    position: relative;
+    padding: 20px 25px 20px 10px ;
+}
+.cardBody > .row {
+    align-items: flex-end !important;
+}
+.card-popup > .cardBody> .row > div:nth-of-type(2){
+    padding: 0px !important;
+}
+
+.popup-body{
+    background-color: white;
+    padding: 40px 15px;
+    border-radius: 10px;
+    width: 40%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 30px;
+    position: relative;
+}
+.card-popup > i{
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    transition: .25s ease;
+    font-size: 18px;
+}
+.card-popup > i:hover{
+    cursor: pointer;
+    color: #66c4de;
+}

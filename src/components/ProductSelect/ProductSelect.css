@@ -1,0 +1,101 @@
+.invoice-product-header,
+.inovice-product{
+    display: flex ;
+    justify-content: center;
+    align-items: flex-start ;
+    vertical-align: top ;
+    gap: 20px;
+    position: relative;
+}
+.invoice-product-header> div:nth-of-type(1),
+.inovice-product> div:nth-of-type(1){
+    width: 60%;
+}
+.product-title {
+    border-bottom: 1px solid #DDDDDD;
+    padding: 13px 10px 1px;
+}
+.product-title > p{
+    line-height: 0px;
+}
+.invoice-product-header> div:nth-of-type(2),
+.inovice-product> div:nth-of-type(2){
+    display: flex;
+    width: 40%;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+}
+.product-data > div{
+    width: 30%;
+    border-bottom: 1px solid #DDDDDD;
+    padding: 4px 2px 1px;
+}
+.product-data> div > p{
+    line-height: 0;
+}
+.product-data > div:nth-of-type(4){
+    border: none !important;
+    width: 10% !important;
+}
+.quantity-update{
+    padding: 0px !important;
+    margin-bottom: 8px;
+    width: 100px;
+    border: none;
+}
+.quantity-update:focus{
+    border: none;
+}
+
+.controls{
+    display: none;
+    position: absolute;
+    background-color: white;
+    min-height: 40px;
+    max-height: auto;
+    width: 100px;
+    z-index: 99;
+    right: 30px;
+    top: 10px;
+    border-radius: 5px;
+    border: 1px solid #DDDDDD;
+}
+.controls> div{
+    display: flex;
+    gap: 5px;
+    justify-content: flex-start;
+    align-items: center;
+    padding:5px 10px 0px;
+    cursor: pointer;
+}
+.controls>div>p{
+    line-height: 0;
+    font-size: 12px;
+    margin-top: 12px;
+    cursor: pointer;
+}
+.controls> div:hover{
+    background-color: #DDDDDD;
+}
+#controls:checked ~.controls {
+   display: block;
+}
+
+.form-control[disabled]{
+    background-color: white !important;
+}
+
+
+.invoice-product-header>div>div{
+    width: 30%;
+}
+.invoice-product-header>div>div:nth-of-type(4){
+    width: 10% !important;
+}
+
+.invoice-product-header >div > p,
+.invoice-product-header> div> div >p{
+    color: #f8f9fa;
+    padding-top: 10px;
+}
