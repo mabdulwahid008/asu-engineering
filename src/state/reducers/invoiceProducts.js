@@ -11,7 +11,7 @@ const invoiceProducts = (state= initialState, action) => {
         }
         case 'UPDATE_PRODUCT_QUANTITY':{
             const product = state.find((product)=>{return product.id === action.payload.id})
-            product.quantity = action.quantity;
+            product.selectedQuantity = action.quantity;
             return state;
         }
         case 'REMOVE_PRODUCT':{

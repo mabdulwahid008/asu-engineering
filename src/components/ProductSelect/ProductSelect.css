@@ -1,3 +1,6 @@
+.invoice-product-header{
+    margin-bottom: -10px;
+}
 .invoice-product-header,
 .inovice-product{
     display: flex ;

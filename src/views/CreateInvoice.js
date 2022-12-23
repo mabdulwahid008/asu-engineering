@@ -12,6 +12,8 @@ import { removeCustomer } from 'state/actions'
 import { removeCompany } from 'state/actions'
 import { removeAllProducts } from 'state/actions'
 import { logOut } from 'state/actions'
+import Select from 'react-select'
+
 
 function CreateInvoice() {
     const dispatch = useDispatch()
@@ -136,10 +138,6 @@ function CreateInvoice() {
             setLoading(false)
             return;
         }
-        // else{
-        //     setInvoicePopup(true);
-        //     setLoading(false)
-        // }
         else{
             const invoice = {
                 customer_id: customer.id, 
@@ -198,8 +196,21 @@ function CreateInvoice() {
         })
     }, [])
 
+    let options = []
     useEffect(()=>{
         setQuantityUpdated(false)
+
+        if(customers)
+        for(let i = 0; i < customers.length; i++){
+            let obj = {
+                value : customers[i].id,
+                label: customers[i].name
+            }
+            options.push(obj)
+        }
+       
+
+        console.log(options);
 
         let total = 0;
         for (let i = 0; i < selectedProducts.length; i++) {
@@ -207,8 +218,7 @@ function CreateInvoice() {
         }
         setSubtotal(total)
         
-    }, [customer, contractor, company, selectedProducts, quantityUpdated])
-
+    }, [customers, contractor, company, selectedProducts, quantityUpdated, addCustomer])
 
     
   return (<>
@@ -216,29 +226,17 @@ function CreateInvoice() {
         <Row gx-1>
             <Col md="4">
                 <Card>
-                    <CardHeader style={{display:'flex', justifyContent:'space-between', alignItems:'center'}}>
+                    {/* <CardHeader style={{display:'flex', justifyContent:'space-between', alignItems:'center'}}>
                         <CardTitle tag="p">Customer</CardTitle>
                         {!addCustomer && <i className='nc-icon nc-simple-add' onClick={()=>{setaddCustomer(true)}}/>}
                         {addCustomer && <i className='nc-icon nc-simple-delete' onClick={()=>{setaddCustomer(false)}}/>}
-                    </CardHeader>
+                    </CardHeader> */}
                     <CardBody className='.form'>
                        {!customers && <Loading />}
-                        {customers && !addCustomer && <CheckBox data={customers} address={true} Name={true} Title={false} placeholder={'Select Customer'} box={'customer'}/>}
-                        {/* {addCustomer && <Form style={{transition: '1s ease'}}>
-                            <FormGroup>
-                                <label>Name</label>
-                                <Input type='text' name='name' placeholder='Name' />
-                            </FormGroup>
-                            <FormGroup>
-                                <label>Phone</label>
-                                <Input type='number' id='phone' name='phone' placeholder='12 7888 888' />   
-                            </FormGroup>
-                            <FormGroup>
-                                <label>Address (Optional)</label>
-                                <Input type='text' name='Address' placeholder='Address' />
-                            </FormGroup>
-                            <Button color="primary" type="submit">Add New</Button>
-                            </Form>} */}
+                        {/* {customers && <CheckBox data={customers} address={true} Name={true} Title={false} placeholder={'Select Customer'} box={'customer'}/>} */}
+
+                        <label>Customer</label>
+                        {customers && <Select id='value' options={options} />}
                     </CardBody>
                 </Card>
             </Col>
@@ -255,13 +253,13 @@ function CreateInvoice() {
             </Col>
             <Col md="4">
                 <Card>
-                    <CardHeader>
+                    {/* <CardHeader>
                         <CardTitle tag="p">Company</CardTitle>
-                    </CardHeader>
+                    </CardHeader> */}
                     <CardBody>
                         {!companpies && <Loading />}
-                        {companpies && <CheckBox data={companpies} address={false} Name={true} Title={false} placeholder={'Select Company'} box={'company'}/>}
-                    </CardBody>
+                        {/* {companpies && <CheckBox data={companpies} address={false} Name={true} Title={false} placeholder={'Select Company'} box={'company'}/>} */}
+                     </CardBody>
                 </Card>
             </Col>
         </Row>
@@ -269,7 +267,7 @@ function CreateInvoice() {
         <Row>
             <Col md="12">
                 <Card>
-                    <CardHeader style={{backgroundColor:'#2c2c2c', borderTopLeftRadius: 10, borderTopRightRadius: 10}}>
+                    <CardHeader style={{backgroundColor:'#2c2c2c', borderTopLeftRadius: 10, borderTopRightRadius: 10, paddingTop: '0px'}}>
                         <div className='invoice-product-header'>
                             <div>
                                 <p>Products</p>

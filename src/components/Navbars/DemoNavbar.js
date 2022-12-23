@@ -33,12 +33,18 @@ import {
   InputGroup,
   InputGroupText,
   InputGroupAddon,
-  Input
+  Input,
+  Button
 } from "reactstrap";
-
+import { AiOutlinePoweroff } from 'react-icons/ai'
 import routes from "routes.js";
+import { useDispatch } from "react-redux";
+import { logOut } from "state/actions";
 
 function Header(props) {
+
+  const dispatch = useDispatch()
+
   const [isOpen, setIsOpen] = React.useState(false);
   const [dropdownOpen, setDropdownOpen] = React.useState(false);
   const [color, setColor] = React.useState("transparent");
@@ -138,15 +144,15 @@ function Header(props) {
             </InputGroup>
           </form>
           <Nav navbar>
-            <NavItem>
+            {/* <NavItem>
               <Link to="#pablo" className="nav-link btn-magnify">
                 <i className="nc-icon nc-layout-11" />
                 <p>
                   <span className="d-lg-none d-md-block">Stats</span>
                 </p>
               </Link>
-            </NavItem>
-            <Dropdown
+            </NavItem> */}
+            {/* <Dropdown
               nav
               isOpen={dropdownOpen}
               toggle={(e) => dropdownToggle(e)}
@@ -162,10 +168,14 @@ function Header(props) {
                 <DropdownItem tag="a">Another Action</DropdownItem>
                 <DropdownItem tag="a">Something else here</DropdownItem>
               </DropdownMenu>
-            </Dropdown>
+            </Dropdown> */}
             <NavItem>
-              <Link to="#pablo" className="nav-link btn-rotate">
-                <i className="nc-icon nc-settings-gear-65" />
+              <Link to='create-invoice'><Button>Create Invoice</Button></Link>
+            </NavItem>
+            <NavItem>
+              <Link to="/" className="nav-link btn-rotate">
+                {/* <i className="nc-icon nc-settings-gear-65" /> */}
+                <AiOutlinePoweroff onClick={()=>{localStorage.removeItem('token'); dispatch(logOut())}}/>
                 <p>
                   <span className="d-lg-none d-md-block">Account</span>
                 </p>

@@ -7,7 +7,7 @@ import { FaEllipsisV } from "react-icons/fa";
 import { removeProduct } from 'state/actions';
 import { updateProductQuantityy } from 'state/actions';
 
-function ProductSelect({ data, setQuantityUpdated }) {
+function ProductSelect({ setQuantityUpdated }) {
     const selectedProduct =useSelector(state=>state.invoiceProducts)
     const dispatch = useDispatch()
 
@@ -30,6 +30,7 @@ function ProductSelect({ data, setQuantityUpdated }) {
     }
 
     useEffect(()=>{
+        console.log(selectedProduct);
     },[selectedProduct])
   return (<>
   {selectedProduct.map((product)=>{ 
@@ -42,10 +43,10 @@ function ProductSelect({ data, setQuantityUpdated }) {
                 <p>{product.price}</p>
             </div>
             <FormGroup>
-                <Input className='quantity-update' type='number' id={`quantity${product.id}`} min={1} defaultValue={product.quantity} name="quantity" onChange={()=>{quantityHandler(product)}}/>
+                <Input className='quantity-update' type='number' id={`quantity${product.id}`} min={1} max={product.quantity} defaultValue={product.selectedQuantity} name="quantity" onChange={()=>{quantityHandler(product)}}/>
             </FormGroup>
             <div>
-                <p>{product.quantity * product.price}</p>
+                <p>{product.selectedQuantity * product.price}</p>
             </div>
             <div className='more-option'>
                 {selectedProduct && <FaEllipsisV onClick={()=>{controls(product)}} id="more-option"/>}
@@ -68,25 +69,6 @@ function ProductSelect({ data, setQuantityUpdated }) {
         </div>}
     </div>})}
     
-   <div className='inovice-product'>
-        <div>
-            <CheckBox data={data} address={false} placeholder={'Select Product'} Name={false} Title={true} box={'product'}/>
-        </div>
-        <div className='product-data'>
-            <div>
-                <p></p>
-            </div>
-            <FormGroup>
-                <Input className='quantity-update' type='number'  disabled/>
-            </FormGroup>
-            <div>
-                <p></p>
-            </div>
-            <div className='actions'>
-               
-            </div>
-        </div>
-    </div>
     </>)
 }
 

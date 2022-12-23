@@ -80,3 +80,30 @@
 }
 
 
+
+/* design */
+.logo-normal {
+    text-align: center !important;
+}
+.nav > li {
+    width: 200px !important;
+}
+.nav > li > a {
+    margin: 0px 0px 0px 10px !important;
+}
+
+.sidebar .sidebar-wrapper li.active > a:not([data-toggle=collapse]):before ,
+.sidebar .sidebar-wrapper li.active > a:not([data-toggle=collapse]):after {
+    right: 0px !important;
+}
+
+.sidebar, .off-canvas-sidebar {
+    width: 200px !important
+}
+.sidebar .sidebar-wrapper{
+    width: 200px !important;
+}
+
+.main-panel {
+    width: calc(100% - 200px) !important;
+}

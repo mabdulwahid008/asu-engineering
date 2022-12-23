@@ -27,7 +27,7 @@ function PopupInvoice({ setInvoicePopup, customer, contractor, selectedProducts,
             <CardBody className='cardBody'>
                 <Row>
                     <Col md='9'> 
-                        <p>{contractor.name} has due balance of 'balance'</p>
+                        {/* <p>{contractor.name} has due balance of 'balance'</p> */}
                         <Form>
                             <FormGroup>
                                 <label>Enter Amount</label>
@@ -41,9 +41,9 @@ function PopupInvoice({ setInvoicePopup, customer, contractor, selectedProducts,
                 </Row>
                 <Row>
                     <Col md='7'>
-                        <PDFDownloadLink document={<PDFfile customer={customer} contractor={contractor} selectedProducts={selectedProducts} subtotal={subtotal}/> } fileName="invoice">
+                        {/* <PDFDownloadLink document={<PDFfile customer={customer} contractor={contractor} selectedProducts={selectedProducts} subtotal={subtotal}/> } fileName="invoice">
                             {({loading}) => (<Button color='primary' style={{width:'100%'}} disabled={buttonDisable ? true: false}>{loading? 'Generating' : 'Download PDF'}</Button> )}
-                        </PDFDownloadLink>
+                        </PDFDownloadLink> */}
                     </Col>
                     <Col md='5'>
                         <Button color='primary' disabled={buttonDisable ? true: false} style={{width: '100%'}}>Print PDF</Button>
@@ -53,7 +53,7 @@ function PopupInvoice({ setInvoicePopup, customer, contractor, selectedProducts,
             <i className='nc-icon nc-simple-remove' onClick={closePopup}/>
         </Card>
         <div style={{display:'none'}}>
-            <PDFfile customer={customer} contractor={contractor} selectedProducts={selectedProducts}/>
+            {/* <PDFfile customer={customer} contractor={contractor} selectedProducts={selectedProducts}/> */}
         </div>
     </div>
   )

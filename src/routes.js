@@ -38,6 +38,7 @@ import EditCustomers from "views/EditCustomers";
 import AddCustomer from "views/AddCustomer";
 import CreateInvoice from "views/CreateInvoice";
 import Invoices from "views/Invoices";
+import CreateInvoices from "views/CreateInvoices";
 
 
 var routes = [
@@ -50,11 +51,11 @@ var routes = [
     layout: "/admin"
   },
   {
-    parent: true,
+    parent: false,
     path: "/create-invoice",
     name: "Create Invoice",
     icon: "nc-icon nc-paper",
-    component: CreateInvoice,
+    component: CreateInvoices,
     layout: "/admin"
   },
   {
@@ -65,14 +66,14 @@ var routes = [
     component: Invoices,
     layout: "/admin"
   },
-  {
-    parent: true,
-    path: "/icons",
-    name: "Icons",
-    icon: "nc-icon nc-diamond",
-    component: Icons,
-    layout: "/admin"
-  },
+  // {
+  //   parent: true,
+  //   path: "/icons",
+  //   name: "Icons",
+  //   icon: "nc-icon nc-diamond",
+  //   component: Icons,
+  //   layout: "/admin"
+  // },
   // {
   //   path: "/maps",
   //   name: "Maps",
@@ -80,14 +81,14 @@ var routes = [
   //   component: Maps,
   //   layout: "/admin"
   // },
-  {
-    parent: true,
-    path: "/notifications",
-    name: "Notifications",
-    icon: "nc-icon nc-bell-55",
-    component: Notifications,
-    layout: "/admin"
-  },
+  // {
+  //   parent: true,
+  //   path: "/notifications",
+  //   name: "Notifications",
+  //   icon: "nc-icon nc-bell-55",
+  //   component: Notifications,
+  //   layout: "/admin"
+  // },
   // {
   //   path: "/user-page",
   //   name: "User Profile",

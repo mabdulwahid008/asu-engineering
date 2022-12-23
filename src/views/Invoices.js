@@ -6,6 +6,7 @@ import { useTable } from 'react-table'
 import { Button, Card, CardBody, CardHeader, CardTitle, Col, Row, Table } from 'reactstrap'
 import InvoicesTable from 'components/InvoicesTable/InvoicesTable'
 import Loading from 'components/Loading/Loading'
+import { Link } from 'react-router-dom'
 
 function Invoices() {
     const [invoices, setInvoices] = useState(null)
@@ -113,7 +114,7 @@ function Invoices() {
                 <Card>
                     <CardHeader style={{display:'flex', justifyContent: 'space-between'}}>
                         <CardTitle tag="h4">Invoices</CardTitle>
-                        <Button color='primary'>Create Invoice</Button>
+                        <Link to='create-invoice'><Button color='primary'>Create Invoice</Button></Link>
                     </CardHeader>
                     <CardBody>
                     {!invoices && <Loading/>}
@@ -123,24 +124,26 @@ function Invoices() {
                         <thead className="text-primary">
                             <tr>
                                 <th style={{width: '3%'}}>#</th>
-                                <th style={{width: '25%'}}>Customer</th>
-                                <th style={{width: '20%'}}>Contractor</th>
-                                <th style={{width: '20%'}}>Company</th>
+                                <th style={{width: '12%'}}>Inv-Asu</th>
+                                <th style={{width: '15%'}}>Customer</th>
+                                <th style={{width: '15%'}}>Contractor</th>
+                                <th style={{width: '15%'}}>Company</th>
                                 <th style={{width: '12%'}}>Totals</th>
                                 <th style={{width: '15%'}}>Created On</th>
                                 <th style={{width: '5%'}}>Download</th>
                             </tr>
                         </thead>
                         <tbody>
-                           {invoices.reverse().map((invoice, index)=>{
-                               return  <tr>
+                           {invoices.map((invoice, index)=>{
+                               return  <tr key={invoice.id}>
                                             <td>{(records + index + 1)}</td>
+                                            <td>INV-ASU-{invoice.id}</td>
                                             <td>{invoice.customer_name}</td>
                                             <td>{invoice.contractor_name}</td>
                                             <td>{invoice.company_name}</td>
                                             <td>{invoice.total}</td>
                                             <td>{invoice.created_at.substr(0,10)}</td>
-                                            <td><i className='nc-icon nc-cloud-download-93' style={{fontSize: 18}}/></td>
+                                            <Button>Download</Button>
                                         </tr>
                            })}
                         </tbody>
