@@ -111,7 +111,8 @@ const  style =StyleSheet.create({
 })
 
 
-const PDFfile = ({ customer , contractor, selectedProducts, subtotal }) => {
+// const PDFfile = ({ customer , contractor, selectedProducts, subtotal }) => {
+const PDFfile = ({ invoice }) => {
     const monthName = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
     return ( 
         <Document>
@@ -122,8 +123,9 @@ const PDFfile = ({ customer , contractor, selectedProducts, subtotal }) => {
                 <View style={style.row}>
                     <View style={style.col}>
                         <Text style={style.heading}>Customer:</Text>
-                        <Text style={style.text}>{customer.name}</Text>
-                        <Text style={style.text}>{customer.address}</Text>
+                        <Text style={style.text}>{invoice.customer.name}</Text>
+                        <Text style={style.text}>03{invoice.customer.phone}</Text>
+                        <Text style={style.text}>{invoice.customer.address}</Text>
                     </View>
                     <View style={style.col}></View>
                     <View style={style.col}></View>
@@ -132,9 +134,9 @@ const PDFfile = ({ customer , contractor, selectedProducts, subtotal }) => {
                 <View style={style.row}>
                     <View style={style.col}>
                         <Text style={style.heading}>Site Details:</Text>
-                        <Text style={style.text}>{contractor.name}</Text>
-                        <Text style={style.text}>03{contractor.phone}</Text>
-                        <Text style={style.text}>{contractor.address}</Text>
+                        <Text style={style.text}>{invoice.contractor.name}</Text>
+                        <Text style={style.text}>03{invoice.contractor.phone}</Text>
+                        <Text style={style.text}>{invoice.contractor.address}</Text>
                     </View>
                     {/* <View style={style.col}></View> */}
                     <View style={style.col}>
@@ -146,7 +148,7 @@ const PDFfile = ({ customer , contractor, selectedProducts, subtotal }) => {
                                 <Text style={style.heading}>Due Date:</Text>
                             </View>
                             <View style={style.rightAlignCol}>
-                                <Text style={style.text}>00123</Text>
+                                <Text style={style.text}>INV-ASU-{invoice.id}</Text>
                                 <Text style={style.text}>{`${new Date().getDate()}/${monthName[new Date().getMonth()]}/${new Date().getFullYear()}`}</Text>
                                 <Text style={style.text}>cash</Text>
                                 <Text style={style.text}>{`${new Date().getDate()}/${monthName[new Date().getMonth()]}/${new Date().getFullYear()}`}</Text>
@@ -172,22 +174,22 @@ const PDFfile = ({ customer , contractor, selectedProducts, subtotal }) => {
                         <Text style={style.heading}>Line Total</Text>
                     </View>
                 </View>
-                {selectedProducts.map((product, index)=>{
+                {invoice.sales.map((sale, index)=>{
                     return  <View style={style.products}>
                                 <View style={style.productCol1}>
                                     <Text style={style.text}>{index+1}</Text>
                                 </View>
                                 <View style={style.productCol2}>
-                                    <Text style={style.text}>{product.title}</Text>
+                                    <Text style={style.text}>{sale.product.title}</Text>
                                 </View>
                                 <View style={style.productCol3}>
-                                    <Text style={style.text}>{product.price}</Text>
+                                    <Text style={style.text}>{sale.product.price}</Text>
                                 </View>
                                 <View style={style.productCol3}>
-                                    <Text style={style.text}>{product.quantity}</Text>
+                                    <Text style={style.text}>{sale.quantity}</Text>
                                 </View>
                                 <View style={style.productCol3}>
-                                    <Text style={style.text}>{product.price * product.quantity}</Text>
+                                    <Text style={style.text}>{sale.amount}</Text>
                                 </View>
                             </View>
                 })}
@@ -202,8 +204,8 @@ const PDFfile = ({ customer , contractor, selectedProducts, subtotal }) => {
                                 <Text style={style.heading}>Total:</Text>
                             </View>
                             <View style={style.rightAlignCol}>
-                                <Text style={style.text}>{subtotal} Rs</Text>
-                                <Text style={style.text}>{subtotal} Rs</Text>
+                                <Text style={style.text}>{invoice.total} Rs</Text>
+                                <Text style={style.text}>{invoice.total} Rs</Text>
                             </View>
                         </View>
                     </View>

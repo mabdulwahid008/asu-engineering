@@ -1,11 +1,12 @@
 .popup, .overlay{
-    height: 100vh;
+    height: calc(100vh + 50px);
     width: 100%;
     position: absolute;
     top: 0px;
     left: 0px;
     right: 0px;
     bottom: 0px;
+    z-index: 100000;
 }
 .overlay{
     background-color: rgba(0, 0, 0, 0.272);
@@ -16,14 +17,15 @@
     align-items: center;
 }
 .card-popup{
+    z-index: 1000001;
     width: 40%;
     position: relative;
     padding: 20px 25px 20px 10px ;
 }
-.cardBody > .row {
+.cardBody > form > .row {
     align-items: flex-end !important;
 }
-.card-popup > .cardBody> .row > div:nth-of-type(2){
+.card-popup > .cardBody> form > .row > div:nth-of-type(2){
     padding: 0px !important;
 }
 

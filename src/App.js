@@ -10,20 +10,28 @@ import 'react-toastify/dist/ReactToastify.css';
 function App() {
   const loggedIn = useSelector(state=> state.authenticateUser)
   const dispatch = useDispatch();
-
-  useEffect(()=>{
-    if(localStorage.getItem('token'))
-        dispatch(loggIn())
-  }, [loggedIn])
-  return (
-    <div>
-        <Switch>
-            <Route path="/admin" render={ (props) => loggedIn? <AdminLayout {...props} /> : <Login />} />
-            <Redirect to="/admin/dashboard" />
-        </Switch> 
-        <ToastContainer position="top-right" autoClose={5000} hideProgressBar newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover theme="light" />
-    </div>
-  )
+  
+  if(localStorage.getItem('token'))
+     return (
+      <div>
+          <Switch>
+              <Route path="/admin" render={ (props) =>  <AdminLayout {...props} /> } />
+              <Redirect to="/admin/dashboard" />
+          </Switch> 
+          <ToastContainer position="top-right" autoClose={5000} hideProgressBar newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover theme="light" />
+      </div>
+     )
+  
+  else
+    return (
+      <div>
+          <Switch>
+              <Route path="/admin" render={ (props) =>  <Login />} />
+              <Redirect to="/admin/dashboard" />
+          </Switch> 
+          <ToastContainer position="top-right" autoClose={5000} hideProgressBar newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover theme="light" />
+      </div>
+    )
 }
 
 export default App

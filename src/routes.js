@@ -39,6 +39,7 @@ import AddCustomer from "views/AddCustomer";
 import CreateInvoice from "views/CreateInvoice";
 import Invoices from "views/Invoices";
 import CreateInvoices from "views/CreateInvoices";
+import Payments from "views/Payments";
 
 
 var routes = [
@@ -61,19 +62,27 @@ var routes = [
   {
     parent: true,
     path: "/invoices",
-    name: "Invoice",
+    name: "Invoices",
     icon: "nc-icon nc-paper",
     component: Invoices,
     layout: "/admin"
   },
-  // {
-  //   parent: true,
-  //   path: "/icons",
-  //   name: "Icons",
-  //   icon: "nc-icon nc-diamond",
-  //   component: Icons,
-  //   layout: "/admin"
-  // },
+  {
+    parent: true,
+    path: "/payments",
+    name: "Payments",
+    icon: "nc-icon nc-credit-card",
+    component: Payments,
+    layout: "/admin"
+  },
+  {
+    parent: true,
+    path: "/icons",
+    name: "Icons",
+    icon: "nc-icon nc-diamond",
+    component: Icons,
+    layout: "/admin"
+  },
   // {
   //   path: "/maps",
   //   name: "Maps",

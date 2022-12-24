@@ -1,60 +1,134 @@
 import { PDFDownloadLink } from '@react-pdf/renderer'
+import Loading from 'components/Loading/Loading'
 import PDFfile from 'components/PDFfile/PDFfile'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
+import { toast } from 'react-toastify'
 import { Button, Card, CardBody, Col, Form, FormGroup, Input, Row } from 'reactstrap'
-import { removeContractor } from 'state/actions'
-import { removeCompany } from 'state/actions'
-import { removeCustomer } from 'state/actions'
+import { logOut } from 'state/actions'
 import { removeAllProducts } from 'state/actions'
 import './PopupInvoice.css'
 
-function PopupInvoice({ setInvoicePopup, customer, contractor, selectedProducts, subtotal }) {
+function PopupInvoice({setInvoicePopup, contractor_id }) {
     const dispatch = useDispatch()
-    const [buttonDisable, setbuttonDisable] = useState(false)
+    const [loading, setLoading] = useState(false)
+    const [singleContractor, setSingleContractor] = useState(null)
+    const [invoice, setInvoice] = useState(null)
+
+    const getSingleContractor = async( ) => {
+        const response = await fetch(`${process.env.REACT_APP_BACKEND_HOST}contractors/${contractor_id}`,{
+            method: 'GET',
+            headers:{
+                'Authorization': localStorage.getItem('token')
+            }
+        })
+        const res = await response.json();
+        
+        if(response.status === 200)
+            setSingleContractor(res)
+        else if(response.status === 401){
+            localStorage.removeItem('token')
+            dispatch(logOut())
+        }
+        else
+            toast.error(res.message)
+    }
+
+    const payContractor = async( e ) => {
+        e.preventDefault()
+        setLoading(true)
+        const response = await fetch(`${process.env.REACT_APP_BACKEND_HOST}payment/${contractor_id}`,{
+            method: 'POST',
+            headers:{
+                'Authorization': localStorage.getItem('token')
+            },
+            body: JSON.stringify({type:0, amount:0, paid_on: '', contractor_id})
+        })
+        const res = await response.json();
+        
+        if(response.status === 200)
+            toast.success(res.message)
+        else if(response.status === 401){
+            localStorage.removeItem('token')
+            dispatch(logOut())
+        }
+        else
+            toast.error(res.message)
+        setLoading(false)
+    }
+
+    const invoice_id = localStorage.getItem('invoice_id')
+    const fecthInvoice = async() =>{
+        const response = await fetch(`${process.env.REACT_APP_BACKEND_HOST}invoices/${invoice_id}`,{
+            method: 'GET',
+            headers: {
+                'Content-Type': 'Application/json',
+                "Authorization" : localStorage.getItem('token')
+            },
+        })
+        const res = await response.json()
+
+        if(response.status === 200){
+            setInvoice(res)
+            console.log(res);
+        }
+        else if(response.status === 401){
+            localStorage.removeItem('token')
+            dispatch(logOut())
+        }
+        else
+            toast.error(res.message)
+    }
 
     const closePopup = () =>{
+        localStorage.removeItem('invoice_id')
         dispatch(removeAllProducts())
-        dispatch(removeCustomer())
-        dispatch(removeContractor())
-        dispatch(removeCompany())
         setInvoicePopup(false)
     }
+
+    useEffect(()=>{
+    },[singleContractor])
+
+    useEffect(()=>{
+        fecthInvoice()
+        getSingleContractor()
+    },[])
   return (
     <div className='popup'>
         <div className='overlay'></div>
-        <Card className='card-popup'>
+        {!singleContractor && <Loading/>}
+        {singleContractor && invoice && <Card className='card-popup'>
             <CardBody className='cardBody'>
-                <Row>
-                    <Col md='9'> 
-                        {/* <p>{contractor.name} has due balance of 'balance'</p> */}
-                        <Form>
-                            <FormGroup>
-                                <label>Enter Amount</label>
-                                <Input type='number' required min={0} defaultValue={0}/>
-                            </FormGroup>
-                        </Form>
-                    </Col>
-                    <Col md='3'>
-                        <Button color='primary' style={{width: '100%'}}>Pay</Button>
-                    </Col>
-                </Row>
+                <Form onSubmit={payContractor}>
+                    <Row>
+                        <Col md='9'> 
+                            <h5 style={{fontSize:'18px'}}>{singleContractor.name} has due balance of {singleContractor.balance}</h5>
+                                <FormGroup>
+                                    <label>Pay {singleContractor.name}</label>
+                                    <Input type='number' required min={0} placeholder='0'/>
+                                </FormGroup>
+                        </Col>
+                        <Col md='3'>
+                            <Button color='primary' type='submit'  disabled={loading ? true: false} style={{width: '100%'}}>Pay</Button>
+                        </Col>
+                    </Row>
+                </Form>
                 <Row>
                     <Col md='7'>
-                        {/* <PDFDownloadLink document={<PDFfile customer={customer} contractor={contractor} selectedProducts={selectedProducts} subtotal={subtotal}/> } fileName="invoice">
-                            {({loading}) => (<Button color='primary' style={{width:'100%'}} disabled={buttonDisable ? true: false}>{loading? 'Generating' : 'Download PDF'}</Button> )}
-                        </PDFDownloadLink> */}
+                        <PDFDownloadLink document={<PDFfile invoice={invoice}/> } fileName="invoice">
+                            {({loading}) => (<Button color='primary' style={{width:'100%'}}>{loading? 'Generating' : 'Download PDF'}</Button> )}
+                        </PDFDownloadLink>
                     </Col>
                     <Col md='5'>
-                        <Button color='primary' disabled={buttonDisable ? true: false} style={{width: '100%'}}>Print PDF</Button>
+                        <Button color='primary' style={{width: '100%'}}>Print Invoice</Button>
                     </Col>
                 </Row>
             </CardBody>
             <i className='nc-icon nc-simple-remove' onClick={closePopup}/>
-        </Card>
-        <div style={{display:'none'}}>
-            {/* <PDFfile customer={customer} contractor={contractor} selectedProducts={selectedProducts}/> */}
-        </div>
+        </Card>}
+        {invoice && <div style={{display:'none'}}>
+            <PDFfile invoice={invoice}/>
+        </div>}
     </div>
   )
 }

@@ -11,6 +11,9 @@ function ProductSelect({ setQuantityUpdated }) {
     const selectedProduct =useSelector(state=>state.invoiceProducts)
     const dispatch = useDispatch()
 
+    const onKeyPress = (  ) =>{
+        
+    }
     const quantityHandler = ( product ) => {
         let quant = document.getElementById(`quantity${product.id}`).value
         dispatch(updateProductQuantityy(product, quant))
@@ -30,7 +33,6 @@ function ProductSelect({ setQuantityUpdated }) {
     }
 
     useEffect(()=>{
-        console.log(selectedProduct);
     },[selectedProduct])
   return (<>
   {selectedProduct.map((product)=>{ 
@@ -43,7 +45,7 @@ function ProductSelect({ setQuantityUpdated }) {
                 <p>{product.price}</p>
             </div>
             <FormGroup>
-                <Input className='quantity-update' type='number' id={`quantity${product.id}`} min={1} max={product.quantity} defaultValue={product.selectedQuantity} name="quantity" onChange={()=>{quantityHandler(product)}}/>
+                <Input className='quantity-update' type='number' id={`quantity${product.id}`} min={1} max={product.quantity} defaultValue={product.selectedQuantity} onKeyPress={onKeyPress} name="quantity" onChange={()=>{quantityHandler(product)}}/>
             </FormGroup>
             <div>
                 <p>{product.selectedQuantity * product.price}</p>

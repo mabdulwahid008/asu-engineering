@@ -107,3 +107,9 @@
 .main-panel {
     width: calc(100% - 200px) !important;
 }
+
+.css-13cymwt-control:hover,
+.css-13cymwt-control :focus{
+    border-color: black !important;
+    box-shadow: none !important;
+}

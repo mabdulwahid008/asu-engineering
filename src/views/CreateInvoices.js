@@ -7,6 +7,9 @@ import { toast } from 'react-toastify'
 import { SelectProduct } from 'state/actions'
 import ProductSelect from 'components/ProductSelect/ProductSelect'
 import PopupInvoice from 'components/PopupInvoice/PopupInvoice'
+import CreateUserPopup from 'components/createUserPopup.js/CreateUserPopup'
+import Loading from 'components/Loading/Loading'
+import { removeAllProducts } from 'state/actions'
 
 
 function CreateInvoices() {
@@ -39,6 +42,9 @@ function CreateInvoices() {
 
     // for showing popup after posting 
     const [invoicePopup, setInvoicePopup] = useState(false)
+
+    // for ading-customer popup
+    const [addCustomer, setaddCustomer] = useState(false)
 
     // fetching APIs
     const fetchCustomers = async() => {
@@ -182,8 +188,8 @@ function CreateInvoices() {
             const res = await response.json()
 
             if(response.ok){
+                localStorage.setItem('invoice_id', res.invoice_id)
                 toast.success(res.message)
-                console.log(res);
                 setInvoicePopup(true)
             }
             else if(response.status === 401){
@@ -192,7 +198,6 @@ function CreateInvoices() {
             }
             else if(response.status === 500){
                 toast.error('Server Error')
-                console.log(invoice);
             }
             else{
                 toast.error(res.message)
@@ -258,7 +263,7 @@ function CreateInvoices() {
             }
             setProductOptions(product)
         }
-    }, [customers, companies, contractors])
+    }, [customers, companies, contractors, products])
 
     useEffect(() => {
         fetchCustomers();
@@ -266,6 +271,9 @@ function CreateInvoices() {
         getContractors();
         fetchProducts();
         
+        return(()=>{
+            dispatch(removeAllProducts())
+        })
     }, [])
   return (<>
     <div className='content'>
@@ -275,8 +283,12 @@ function CreateInvoices() {
                     <Card>
                         <CardBody style={{paddingBottom: '2px'}}>
                             <FormGroup>
-                                <label>Customer</label>
-                                {customerOptions && <Select options={customerOptions} name='customer' onChange={onChangeCustomer}/>}
+                                <div style={{display:'flex', justifyContent:'space-between', alignItems:'center'}}>
+                                    <label>Customer</label>
+                                    <i className='nc-icon nc-simple-add' onClick={()=>{setaddCustomer(true)}}/>
+                                </div>
+                                {!customerOptions && <Loading />}
+                                {customerOptions && <Select options={customerOptions} name='customer' onChange={onChangeCustomer} styles={{control: (baseStyles, state) => ({...baseStyles,borderColor: state.isFocused ? 'black' : '#DDDDDD', boxShadow: 'none'}),}}/>}
                             </FormGroup>
                         </CardBody>
                     </Card>
@@ -285,8 +297,9 @@ function CreateInvoices() {
                     <Card>
                         <CardBody style={{paddingBottom: '2px'}}>
                             <FormGroup>
-                                <label>Contractor</label>
-                                {contractorOptions && <Select options={contractorOptions}  onChange={onChangeContractor}/>}
+                                <label style={{marginBottom:12}}>Contractor</label>
+                                {!contractorOptions && <Loading />}
+                                {contractorOptions && <Select options={contractorOptions}  onChange={onChangeContractor} styles={{control: (baseStyles, state) => ({...baseStyles,borderColor: state.isFocused ? 'black' : '#DDDDDD', boxShadow: 'none'}),}}/>}
                             </FormGroup>
                         </CardBody>
                     </Card>
@@ -295,8 +308,9 @@ function CreateInvoices() {
                     <Card>
                         <CardBody style={{paddingBottom: '2px'}}>
                             <FormGroup>
-                                <label>Company</label>
-                                {companyOptions && <Select options={companyOptions} onChange={onChangeCompany}/>}
+                                <label style={{marginBottom:12}}>Company</label>
+                                {!companyOptions && <Loading />}
+                                {companyOptions && <Select options={companyOptions} onChange={onChangeCompany} styles={{control: (baseStyles, state) => ({...baseStyles,borderColor: state.isFocused ? 'black' : '#DDDDDD', boxShadow: 'none'}),}}/>}
                             </FormGroup>
                         </CardBody>
                     </Card>
@@ -326,9 +340,10 @@ function CreateInvoices() {
                         </CardHeader>
                         <CardBody>
                             <ProductSelect setQuantityUpdated={setQuantityUpdated}/>
-                            <div className='inovice-product'>
+                            {!productOptions && <Loading />}
+                            {productOptions && <div className='inovice-product'>
                                 <div>
-                                    {productOptions && <Select options={productOptions} onChange={onChangeProduct}/>}
+                                    <Select options={productOptions} onChange={onChangeProduct} styles={{control: (baseStyles, state) => ({...baseStyles,borderColor: state.isFocused ? 'black' : '#DDDDDD', boxShadow: 'none'}),}}/>
                                 </div>
                                 <div className='product-data'>
                                     <div>
@@ -344,7 +359,7 @@ function CreateInvoices() {
                                     
                                     </div>
                                 </div>
-                            </div>
+                            </div>}
                         </CardBody>
                     </Card>
                 </Col>
@@ -354,7 +369,7 @@ function CreateInvoices() {
                 <Col md="8"></Col>
                 <Col md="4">
                     <Card>
-                        <CardBody>
+                        <CardBody style={{paddingBottom: '2px'}}>
                             <Row style={{marginBottom: -20}}>
                                 <Col md="6">Subtotal</Col>
                                 <Col md="6">
@@ -379,7 +394,8 @@ function CreateInvoices() {
             </Row>
         </Form>
     </div>
-    {invoicePopup && <PopupInvoice setInvoicePopup={setInvoicePopup} />}
+    {addCustomer && <CreateUserPopup setaddCustomer={setaddCustomer}/>}
+    {invoicePopup && <PopupInvoice setInvoicePopup={setInvoicePopup} contractor_id={invoice.contractor} />}
 </>
   )
 }
