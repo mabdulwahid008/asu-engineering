@@ -56,7 +56,7 @@ function User() {
                   <p className="description">@chetfaker</p>
                 </div>
                 <p className="description text-center">
-                  "I like the way you work it <br />
+                  "I like the way you work it. <br />
                   No diggity <br />I wanna bag it up"
                 </p>
               </CardBody>
