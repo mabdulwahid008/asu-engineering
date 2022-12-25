@@ -36,7 +36,6 @@ import EditContractor from "views/EditContractor";
 import Customers from "views/Customers";
 import EditCustomers from "views/EditCustomers";
 import AddCustomer from "views/AddCustomer";
-import CreateInvoice from "views/CreateInvoice";
 import Invoices from "views/Invoices";
 import CreateInvoices from "views/CreateInvoices";
 import Payments from "views/Payments";
