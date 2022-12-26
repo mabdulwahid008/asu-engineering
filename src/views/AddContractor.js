@@ -1,22 +1,24 @@
 import React, { useState } from 'react'
-import { useDispatch } from 'react-redux'
 import { toast } from 'react-toastify'
 import { Card, CardBody, CardHeader, CardTitle, Col, Row,  FormGroup, Form, Input, Button} from 'reactstrap'
-import { logOut } from 'state/actions'
 
 function AddContractor() {
     const [loading, setLoading] = useState(false)
-    const [contractor, setContractor] = useState({name: '', phone: 0, balance: ''})
-    const dispatch = useDispatch()
+    const [contractor, setContractor] = useState({name: '', phone: '', balance: '', address: null})
 
     const onChange = ( e ) => {
         setContractor({...contractor, [e.target.name]: e.target.value})
-        console.log(contractor);
     }
 
     const onSubmit = async( e ) => {
         e.preventDefault();
         setLoading(true);
+
+        if(contractor.phone.length !== 11){
+            toast.error('Please enter correct phone number')
+            setLoading(false);
+            return;
+        }
 
         const response = await fetch(`${process.env.REACT_APP_BACKEND_HOST}contractors`,{
             method: 'POST',
@@ -29,12 +31,12 @@ function AddContractor() {
         const res = await response.json()
        
         if(response.ok){
-            setContractor({name: '', phone: 0, balance: ''})
+            setContractor({name: '', phone: 0, balance: '', address: ''})
             toast.success(res.message)
         }
         else if(response.status === 401){
             localStorage.removeItem('token')
-            dispatch(logOut())
+            window.location.reload(true)
         }
         else{
             toast.error(res.message)
@@ -72,6 +74,14 @@ function AddContractor() {
                                             <FormGroup>
                                                 <label>Balance</label>
                                                 <Input placeholder="0" type="number" name="balance" Value={contractor.balance} required onChange={onChange}/>
+                                            </FormGroup>
+                                        </Col>
+                                    </Row>
+                                    <Row>
+                                        <Col className="" md="12">
+                                            <FormGroup>
+                                                <label>Address (Optional)</label>
+                                                <Input placeholder="Address" type="text" Value={contractor.address} name="address" onChange={onChange}/>
                                             </FormGroup>
                                         </Col>
                                     </Row>

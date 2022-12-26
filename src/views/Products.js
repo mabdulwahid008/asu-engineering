@@ -1,16 +1,13 @@
 import Loading from 'components/Loading/Loading';
 import React, { useState, useEffect } from 'react'
 import { FaRegEdit, FaTrash } from "react-icons/fa";
-import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { Card, CardHeader, CardBody, CardTitle, Table, Row, Col, Button } from "reactstrap";
-import { logOut, editProuct } from 'state/actions';
 
 function Products() {
     const [products, setProducts] = useState(null)
     const [loading, setLoading] = useState(false)
-    const dispatch = useDispatch()
 
     const fetchProducts = async() => { 
         const response = await fetch(`${process.env.REACT_APP_BACKEND_HOST}products`,{
@@ -26,7 +23,7 @@ function Products() {
             setProducts(res)
         else if(response.status === 401){
           localStorage.removeItem('token')
-            dispatch(logOut())
+          window.location.reload(true)
         }
         else
           toast.error(res.message)
@@ -51,7 +48,7 @@ function Products() {
       }
       else if(response.status === 401){
         localStorage.removeItem('token')
-        dispatch(logOut())
+        window.location.reload(true)
       }
       else{
         toast.error(res.message)
@@ -97,7 +94,7 @@ function Products() {
                                 <td>{product.unit}</td>
                                 <td>{product.created_at.substr(0,10)}</td>
                                 <td className='actions' style={{}}>
-                                    <Link to={`edit-product/${product.id}`}><FaRegEdit onClick={()=>{dispatch(editProuct(product))}}/> </Link>
+                                    <Link to={`edit-product/${product.id}`}><FaRegEdit /> </Link>
                                     <FaTrash onClick={!loading?()=>deleteProduct(product.id): ''}/>
                                 </td>
                             </tr>

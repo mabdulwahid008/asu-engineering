@@ -1,16 +1,13 @@
 import Loading from 'components/Loading/Loading'
 import React, { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { Card, CardBody, CardHeader, CardTitle, Col, Row,  FormGroup, Form, Input, Button} from 'reactstrap'
-import { logOut } from 'state/actions'
 
 function EditContractor() {
     const [loading, setLoading] = useState(false)
     const [contractor, setContractor] = useState(null)
     const { id } = useParams()
-    const dispatch = useDispatch()
 
     const getContractors = async() =>{
         const response = await fetch(`${process.env.REACT_APP_BACKEND_HOST}contractors`,{
@@ -27,7 +24,7 @@ function EditContractor() {
         }
         else if(response.status === 401){
             localStorage.removeItem('token')
-            dispatch(logOut())
+            window.location.reload(true)
         }
         else{}
             toast.error(res.message)  
@@ -36,12 +33,17 @@ function EditContractor() {
 
     const onChange = ( e ) => {
         setContractor({...contractor, [e.target.name]: e.target.value});
-        console.log(contractor);
     }
 
     const onSubmit = async( e ) => {
         e.preventDefault();
         setLoading(true)
+
+        if(contractor.phone.length !== 11){
+            toast.error('Please enter correct phone number')
+            setLoading(false);
+            return;
+        }
         
         const response = await fetch(`${process.env.REACT_APP_BACKEND_HOST}contractors/${contractor.id}`,{
           method: 'PUT',
@@ -57,7 +59,7 @@ function EditContractor() {
       }
       else if(response.status === 401){
           localStorage.removeItem('token')
-          dispatch(logOut())
+          window.location.reload(true)
       }
       else{
           toast.error(res.message)
@@ -95,6 +97,14 @@ function EditContractor() {
                                         <FormGroup>
                                             <label>Phone</label>
                                             <Input placeholder="0300 0000000" type="number"  defaultValue={+contractor.phone} name="phone" required onChange={onChange}/>
+                                        </FormGroup>
+                                    </Col>
+                                </Row>
+                                <Row>
+                                    <Col md="12">
+                                        <FormGroup>
+                                            <label>Address (Optional)</label>
+                                            <Input placeholder="Address" type="text"  defaultValue={contractor.address} name="address" onChange={onChange}/>
                                         </FormGroup>
                                     </Col>
                                 </Row>

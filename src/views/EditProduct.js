@@ -1,20 +1,37 @@
 import React, { useEffect, useState } from 'react'
 import Loading from 'components/Loading/Loading';
-import { useDispatch, useSelector } from 'react-redux'
 import { toast } from 'react-toastify';
 import { Card, CardBody, CardHeader, CardTitle, Col, Row,  FormGroup, Form, Input, Button} from 'reactstrap'
-import { logOut } from 'state/actions';
-import { updateProduct } from 'state/actions';
 import { useParams } from 'react-router-dom';
 
 function EditProduct() {
-    const productToBeUpdated = useSelector(state=>state.editProduct);
-    const [product, setProduct] = useState(productToBeUpdated)
+    const { id } = useParams()
+    const [product, setProduct] = useState(null)
     const [companpies, setCompanies] = useState(null);
     const [loading, setLoading] = useState(false);
     const [updated, setUpdated] = useState(true);
-    const dispatch = useDispatch()
 
+    const fetchProducts = async() => { 
+        const response = await fetch(`${process.env.REACT_APP_BACKEND_HOST}products`,{
+            method: 'GET',
+            headers:{
+                'Content-Type': 'Application/json',
+                'Authorization': localStorage.getItem('token')
+            }
+        })
+        const res = await response.json()
+        
+        if(response.status === 200){
+            const find = res.filter((obj)=> {return obj.id == id})
+            setProduct(find[0])
+        }
+        else if(response.status === 401){
+          localStorage.removeItem('token')
+          window.location.reload(true)
+        }
+        else
+          toast.error(res.message)
+    }
 
     const onChange = ( e ) => {
         setProduct({...product, [e.target.name] : e.target.value});
@@ -34,7 +51,7 @@ function EditProduct() {
             setCompanies(res)
         else if(response.status === 401){
             localStorage.removeItem('token')
-            dispatch(logOut())
+            window.location.reload(true)
         }
         else
             toast.error(res.message)
@@ -68,7 +85,7 @@ function EditProduct() {
         }
         else if(response.status === 401){
             localStorage.removeItem('token')
-            dispatch(logOut())
+            window.location.reload(true)
         }
         else{
             toast.error(res.message)
@@ -78,15 +95,9 @@ function EditProduct() {
 
     useEffect(()=>{
         getCompanpies()
-
-        setTimeout(()=>{
-            if(!updated){
-              return(()=>{
-                  alert('Leaving this page will not save changes')
-              })
-            }
-          },1000)
-    },[updated])
+        fetchProducts()
+       
+    },[])
   return (
      <div className='content'>
         <Row>

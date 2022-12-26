@@ -2,9 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { toast } from 'react-toastify'
 import { logOut } from 'state/actions'
-import { useTable } from 'react-table'
 import { Button, Card, CardBody, CardHeader, CardTitle, Col, Row, Table } from 'reactstrap'
-import InvoicesTable from 'components/InvoicesTable/InvoicesTable'
 import Loading from 'components/Loading/Loading'
 import { Link } from 'react-router-dom'
 
@@ -15,7 +13,6 @@ function Invoices() {
     const [totalPages, setTotalPages] = useState()
 
 
-    // const [data, setData] = useState(null)
     const [records, setRecords] = useState(0)
     const dispatch = useDispatch()
 
@@ -30,7 +27,6 @@ function Invoices() {
         const res = await response.json()
         
         if(response.status === 200){
-            // setData(res.data)
             setInvoices(res.data)
             setTotalRecords(res.total_records)
             let pages = Math.ceil(res.total_records / 10)
@@ -65,46 +61,7 @@ function Invoices() {
     useEffect(() => {
         if(!invoices)
             fetchInvoices()
-            console.log(invoices);
     }, [invoices, records])
-
-
-    // const columns = React.useMemo(
-    //     () => [
-    //                 {
-    //                     Header: '#',
-    //                     Cell: (row) => {
-    //                         return row.index
-    //                     }
-    //                 },
-    //                 {
-    //                     Header: 'Customer',
-    //                     accessor: 'customer_name',
-    //                 },
-    //                 {
-    //                     Header: 'Contractor',
-    //                     accessor: 'contractor_name',
-    //                 },
-    //                 {
-    //                     Header: 'Company',
-    //                     accessor: 'company_name',
-    //                 },
-    //                 {
-    //                     Header: 'Created On',
-    //                     accessor: `created_at`,
-    //                 },
-    //                 {
-    //                     Header: 'Invoice',
-    //                     Cell: () => (
-    //                         <Button color='primary'>
-    //                             ccc
-    //                         </Button>
-    //                       )
-    //                 },
-    //             ],
-    //     []
-    // )
-
 
     
   return (
@@ -118,7 +75,6 @@ function Invoices() {
                     </CardHeader>
                     <CardBody>
                     {!invoices && <Loading/>}
-                    {/* {invoices && <InvoicesTable columns={columns} data={data} />} */}
                     {invoices && <>
                     <Table>
                         <thead className="text-primary">

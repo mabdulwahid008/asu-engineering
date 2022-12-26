@@ -129,7 +129,7 @@ var routes = [
   },
   {
     parent: false,
-    path: "/edit-product",
+    path: "/edit-product/:id",
     name: "Edit Product",
     component: EditProduct,
     layout: "/admin",

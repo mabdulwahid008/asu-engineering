@@ -1,16 +1,13 @@
 import Loading from 'components/Loading/Loading'
 import React, { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { Button, Card, CardBody, CardHeader, CardTitle, Col, Row, Table } from 'reactstrap'
-import { logOut } from 'state/actions'
 import { FaRegEdit, FaTrash } from "react-icons/fa";
 
 function Contractors() {
     const [contractors, setContractors] = useState(null)
     const [loading, setLoading] = useState(false)
-    const dispatch = useDispatch()
 
     const getContractors = async() => {
         const response = await fetch(`${process.env.REACT_APP_BACKEND_HOST}contractors`,{
@@ -22,11 +19,12 @@ function Contractors() {
         })
         const res = await response.json();
         
-        if(response.status === 200)
+        if(response.status === 200){
             setContractors(res)
+        }
         else if(response.status === 401){
             localStorage.removeItem('token')
-            dispatch(logOut())
+            window.location.reload(true)
         }
         else
             toast.error(res.message)
@@ -51,7 +49,7 @@ function Contractors() {
         }
         else if(response.status === 401){
           localStorage.removeItem('token')
-          dispatch(logOut())
+          window.location.reload(true)
         }
         else{
           toast.error(res.message)
@@ -79,7 +77,8 @@ function Contractors() {
                             <thead className="text-primary">
                                 <tr>
                                     <th>#</th>
-                                    <th style={{width:"50%"}}>Name</th>
+                                    <th>Name</th>
+                                    <th style={{width:"40%"}}>Address</th>
                                     <th>Balance</th>
                                     <th>Phone</th>
                                     <th>Added on</th>
@@ -91,6 +90,7 @@ function Contractors() {
                                     return <tr key={contractor.id} id={`row${contractor.id}`}>
                                             <td>{index+1}</td>
                                             <td>{contractor.name}</td>
+                                            <td>{contractor.address ? contractor.address : '-----'}</td>
                                             <td>{contractor.balance}</td>
                                             <td>{contractor.phone}</td>
                                             <td>{contractor.created_at.substr(0,10)}</td>

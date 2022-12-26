@@ -1,10 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { useHistory } from 'react-router-dom';
 import { Button, Card, CardBody, CardHeader, CardTitle, Col, Form, FormGroup, Input, Row } from 'reactstrap';
-import { logOut } from 'state/actions';
-import { updateCompany } from 'state/actions';
 import Loading from 'components/Loading/Loading';
 import { toast } from 'react-toastify';
 
@@ -12,8 +8,6 @@ function EditCompany() {
   const [company, setCompany] = useState(null)
   const [loading, setLoading] = useState(false)
   const [updated, setUpdated] = useState(true);
-  const dispatch = useDispatch();
-  const history = useHistory()
   const { id } = useParams();
 
   const getCompanpies = async() =>{
@@ -31,7 +25,7 @@ function EditCompany() {
     }
     else if(response.status === 401){
         localStorage.removeItem('token')
-        dispatch(logOut())
+        window.location.reload(true)
     }
     else{}
         toast.error(res.message)  
@@ -63,7 +57,7 @@ function EditCompany() {
   }
   else if(response.status === 401){
       localStorage.removeItem('token')
-      dispatch(logOut())
+      window.location.reload(true)
   }
   else{
       toast.error(res.message)
@@ -98,6 +92,10 @@ function EditCompany() {
                     <FormGroup>
                       <label>Name</label>
                       <Input type='text' name='name' placeholder='Company Name' defaultValue={company.name} required onChange={onChange} />
+                    </FormGroup>
+                    <FormGroup>
+                      <label>Address (Optional)</label>
+                      <Input type='text' name='address' placeholder='Address' defaultValue={company.address} onChange={onChange} />
                     </FormGroup>
                     <Button color="primary" type="submit" disabled={loading? true : false}> {loading? 'Updating...' : 'Update'}</Button>
                   </Form>}

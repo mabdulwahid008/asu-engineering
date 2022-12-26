@@ -1,15 +1,13 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import {  Route, Switch, Redirect } from 'react-router-dom'
 import AdminLayout from "layouts/Admin.js";
 import Login from "views/Login";
-import { useSelector, useDispatch } from 'react-redux'
-import { loggIn } from 'state/actions';
+import { useSelector } from 'react-redux'
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   const loggedIn = useSelector(state=> state.authenticateUser)
-  const dispatch = useDispatch();
   
   if(localStorage.getItem('token'))
      return (

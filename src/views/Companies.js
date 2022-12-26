@@ -79,7 +79,8 @@ function Companies() {
                   <thead className="text-primary">
                     <tr>
                       <th>#</th>
-                      <th style={{width:'60%'}}>Name</th>
+                      <th>Name</th>
+                      <th style={{width:'45%'}}>Address</th>
                       <th>Balance</th>
                       <th>Added On</th>
                       <th>Actions</th>
@@ -90,6 +91,7 @@ function Companies() {
                           return <tr key={company.id} id={`row${company.id}`}>
                                 <td>{index+1}</td>
                                 <td>{company.name}</td>
+                                <td>{company.address ? company.address : '-----'}</td>
                                 <td>{company.balance}</td>
                                 <td>{company.created_at? company.created_at?.substr(0,10): 'null'}</td>
                                 <td className='actions' style={{}}>

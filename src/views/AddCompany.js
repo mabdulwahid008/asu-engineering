@@ -1,14 +1,10 @@
 import React, { useState } from 'react'
 import { Card, CardBody, CardHeader, CardTitle, Col, Row,  FormGroup, Form, Input, Button} from 'reactstrap'
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import { useDispatch } from 'react-redux';
-import { logOut } from 'state/actions';
+import { toast } from 'react-toastify';
 
 function AddCompany() {
-    const [company, setCompany] = useState({name: ''})
+    const [company, setCompany] = useState({name: '', address: null})
     const [loading, setLoading] = useState(false)
-    const dispatch = useDispatch()
     
     const onChange = ( e ) => {
         setCompany({...company, [e.target.name]: e.target.value})
@@ -29,11 +25,11 @@ function AddCompany() {
 
         if(response.ok){
             toast.success(res.message)
-            setCompany({name: ''})
+            setCompany({name: '', address: ''})
         }
         else if(response.status === 401){
             localStorage.removeItem('token')
-            dispatch(logOut())
+            window.location.reload(true)
         }
         else{
             toast.error(res.message)
@@ -57,6 +53,10 @@ function AddCompany() {
                                         <label>Name</label>
                                         <Input type='text' name='name' placeholder='Company Name' required onChange={onChange}/>
                                     </FormGroup>
+                                    <FormGroup>
+                                        <label>Address (Optional)</label>
+                                        <Input type='text' name='address' placeholder='Address' onChange={onChange}/>
+                                    </FormGroup>
                                     <Button color="primary" type="submit" disabled={loading? true : false} >{loading? 'Please Wait...': 'Add Company'}</Button>
                                 </Form>
                             </Col>
@@ -66,7 +66,6 @@ function AddCompany() {
             </Col>
         </Row>
     </div>
-     <ToastContainer position="top-right" autoClose={5000} hideProgressBar newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover theme="light" />
      </>
   )
 }

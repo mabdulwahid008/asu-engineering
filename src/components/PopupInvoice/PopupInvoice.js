@@ -14,6 +14,7 @@ function PopupInvoice({setInvoicePopup, contractor_id }) {
     const [loading, setLoading] = useState(false)
     const [singleContractor, setSingleContractor] = useState(null)
     const [invoice, setInvoice] = useState(null)
+    const [payAmount, setPayAmount] = useState({type:0, amount:0, paid_on: '', contractor_id})
 
     const getSingleContractor = async( ) => {
         const response = await fetch(`${process.env.REACT_APP_BACKEND_HOST}contractors/${contractor_id}`,{
@@ -34,19 +35,27 @@ function PopupInvoice({setInvoicePopup, contractor_id }) {
             toast.error(res.message)
     }
 
+    const onChange = (e) => {
+        setPayAmount({...payAmount, [e.target.name]: e.target.value})
+    }
     const payContractor = async( e ) => {
         e.preventDefault()
         setLoading(true)
-        const response = await fetch(`${process.env.REACT_APP_BACKEND_HOST}payment/${contractor_id}`,{
+
+        payAmount.paid_on = `${new Date().getFullYear()}-${new Date().getMonth()+1}-${new Date().getDate()}`
+
+        console.log(payAmount);
+        const response = await fetch(`${process.env.REACT_APP_BACKEND_HOST}payments`,{
             method: 'POST',
             headers:{
+                'Content-Type' : 'Application/json',
                 'Authorization': localStorage.getItem('token')
             },
-            body: JSON.stringify({type:0, amount:0, paid_on: '', contractor_id})
+            body: JSON.stringify(payAmount)
         })
         const res = await response.json();
         
-        if(response.status === 200)
+        if(response.status === 201)
             toast.success(res.message)
         else if(response.status === 401){
             localStorage.removeItem('token')
@@ -70,7 +79,6 @@ function PopupInvoice({setInvoicePopup, contractor_id }) {
 
         if(response.status === 200){
             setInvoice(res)
-            console.log(res);
         }
         else if(response.status === 401){
             localStorage.removeItem('token')
@@ -105,7 +113,7 @@ function PopupInvoice({setInvoicePopup, contractor_id }) {
                             <h5 style={{fontSize:'18px'}}>{singleContractor.name} has due balance of {singleContractor.balance}</h5>
                                 <FormGroup>
                                     <label>Pay {singleContractor.name}</label>
-                                    <Input type='number' required min={0} placeholder='0'/>
+                                    <Input type='number' name='amount' onChange={onChange} required min={0} placeholder='0'/>
                                 </FormGroup>
                         </Col>
                         <Col md='3'>
