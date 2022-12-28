@@ -5,7 +5,6 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { toast } from 'react-toastify'
 import { Button, Card, CardBody, Col, Form, FormGroup, Input, Row } from 'reactstrap'
-import { logOut } from 'state/actions'
 import { removeAllProducts } from 'state/actions'
 import './PopupInvoice.css'
 
@@ -29,7 +28,7 @@ function PopupInvoice({setInvoicePopup, contractor_id }) {
             setSingleContractor(res)
         else if(response.status === 401){
             localStorage.removeItem('token')
-            dispatch(logOut())
+            window.location.reload(true)
         }
         else
             toast.error(res.message)
@@ -59,7 +58,7 @@ function PopupInvoice({setInvoicePopup, contractor_id }) {
             toast.success(res.message)
         else if(response.status === 401){
             localStorage.removeItem('token')
-            dispatch(logOut())
+            window.location.reload(true)
         }
         else
             toast.error(res.message)
@@ -82,7 +81,7 @@ function PopupInvoice({setInvoicePopup, contractor_id }) {
         }
         else if(response.status === 401){
             localStorage.removeItem('token')
-            dispatch(logOut())
+            window.location.reload(true)
         }
         else
             toast.error(res.message)

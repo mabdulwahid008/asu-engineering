@@ -1,15 +1,11 @@
 import React, { useState } from 'react'
 import { Button, Card, CardBody, CardHeader, CardTitle, Col, Form, FormGroup, Input, Row } from 'reactstrap'
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import { useDispatch } from 'react-redux';
-import { loggIn } from 'state/actions';
+import { toast } from 'react-toastify';
 
 function Login() {
     const [logins, setlogins] = useState({email: '', password: ''});
     const [loading, setLoading] = useState(false)
 
-    const dispatch = useDispatch()
 
     const onChange = ( e ) =>{
         setlogins({...logins, [e.target.name]: e.target.value});
@@ -27,17 +23,17 @@ function Login() {
         const res = await response.json();
 
         if(!res.error){
-            dispatch(loggIn())
             localStorage.setItem('token', res.token_type+res.access_token)
+            window.location.reload(true)
         }
         if(res.error)
             toast.error(res.error)
         setlogins({email: '', password: ''})
         setLoading(false);
     }
-  return (<>
-    <div >
-        <Row style={{display:'flex', justifyContent: 'center', alignItems:'center', overflow: 'hiden', height: 627, width: '100%', background: '#f4f3ef'}}>
+  return (
+    <div>
+        <Row style={{display:'flex', margin:0, justifyContent: 'center', alignItems:'center', overflow: 'hiden', height: 627, width: '100%', background: '#f4f3ef'}}>
             <Col md="4">
                 <Card>
                     <CardHeader>
@@ -72,8 +68,6 @@ function Login() {
             </Col>
         </Row>
     </div>
-        <ToastContainer position="top-right" autoClose={5000} hideProgressBar newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover theme="light" />
-    </>
     )
 }
 

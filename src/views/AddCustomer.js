@@ -1,13 +1,10 @@
 import React, { useState } from 'react'
-import { useDispatch } from 'react-redux'
 import { toast } from 'react-toastify'
 import { Card, CardBody, CardHeader, CardTitle, Col, Row,  FormGroup, Form, Input, Button} from 'reactstrap'
-import { logOut } from 'state/actions'
 
 function AddCustomer() {
     const [loading, setLoading] = useState(false)
     const [customer, setcustomer] = useState({name: '', phone: 0, address: ''})
-    const dispatch = useDispatch()
     
     const onChange = ( e ) => {
         setcustomer({...customer, [e.target.name]: e.target.value})
@@ -33,7 +30,7 @@ function AddCustomer() {
         }
         else if(response.status === 401){
             localStorage.removeItem('token')
-            dispatch(logOut())
+            window.location.reload(true)
         }
         else{
             toast.error(res.message)

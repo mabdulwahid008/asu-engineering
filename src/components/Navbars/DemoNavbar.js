@@ -36,14 +36,10 @@ import {
   Input,
   Button
 } from "reactstrap";
-import { AiOutlinePoweroff } from 'react-icons/ai'
 import routes from "routes.js";
-import { useDispatch } from "react-redux";
-import { logOut } from "state/actions";
 
 function Header(props) {
 
-  const dispatch = useDispatch()
 
   const [isOpen, setIsOpen] = React.useState(false);
   const [dropdownOpen, setDropdownOpen] = React.useState(false);
@@ -64,7 +60,8 @@ function Header(props) {
   const getBrand = () => {
     let brandName = "Default Brand";
     routes.map((prop, key) => {
-      if (window.location.href.indexOf(prop.layout + prop.path) !== -1) {
+      // if (window.location.href.indexOf(prop.layout + prop.path) !== -1) {
+      if (window.location.href.indexOf(prop.path) !== -1) {
         brandName = prop.name;
       }
       return null;
@@ -143,7 +140,7 @@ function Header(props) {
               </InputGroupAddon>
             </InputGroup>
           </form>
-          <Nav navbar>
+          <Nav navbar style={{alignItems:'center'}}>
             {/* <NavItem>
               <Link to="#pablo" className="nav-link btn-magnify">
                 <i className="nc-icon nc-layout-11" />
@@ -173,12 +170,8 @@ function Header(props) {
               <Link to='create-invoice'><Button>Create Invoice</Button></Link>
             </NavItem>
             <NavItem>
-              <Link to="/" className="nav-link btn-rotate">
-                {/* <i className="nc-icon nc-settings-gear-65" /> */}
-                <AiOutlinePoweroff onClick={()=>{localStorage.removeItem('token'); window.location.reload(true)}}/>
-                <p>
-                  <span className="d-lg-none d-md-block">Account</span>
-                </p>
+              <Link to="" className="nav-link btn-rotate">
+                <i className="nc-icon nc-button-power" onClick={()=>{localStorage.removeItem('token'); window.location.reload(true)}} />
               </Link>
             </NavItem>
           </Nav>

@@ -1,13 +1,10 @@
 import Loading from 'components/Loading/Loading'
 import React, { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
 import ReactSelect from 'react-select'
 import { toast } from 'react-toastify'
 import { Button, Card, CardBody, CardHeader, CardTitle, Col, Form, FormGroup, Input, Row } from 'reactstrap'
-import { logOut } from 'state/actions'
 
 function PayPopup({ setPopup }) {
-    const dispatch = useDispatch();
     let id = localStorage.getItem('id');
 
     const [loading, setLoading] = useState(false)

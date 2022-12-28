@@ -114,3 +114,18 @@
     border-color: black !important;
     box-shadow: none !important;
 }
+
+
+.nc-simple-remove{
+    font-size: 18px;
+    cursor: pointer;
+    transition: .25s ease;
+}
+.nc-simple-remove:hover{
+    color: #66c4de;
+}
+
+
+.navbar.navbar-absolute{
+    z-index: 0 !important;
+}

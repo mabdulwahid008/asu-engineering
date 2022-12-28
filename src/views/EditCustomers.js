@@ -1,16 +1,13 @@
 import Loading from 'components/Loading/Loading'
 import React, { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { Card, CardBody, CardHeader, CardTitle, Col, Row,  FormGroup, Form, Input, Button} from 'reactstrap'
-import { logOut } from 'state/actions'
 
 function EditCustomers() {
     const [loading, setLoading] = useState(false)
     const [customer, setCustomer] = useState(null)
     const { id } = useParams()
-    const dispatch = useDispatch()
 
     const getCustomers = async() =>{
         const response = await fetch(`${process.env.REACT_APP_BACKEND_HOST}customers`,{
@@ -27,7 +24,7 @@ function EditCustomers() {
         }
         else if(response.status === 401){
             localStorage.removeItem('token')
-            dispatch(logOut())
+            window.location.reload(true)
         }
         else{}
             toast.error(res.message)  
@@ -58,7 +55,7 @@ function EditCustomers() {
         }
         else if(response.status === 401){
             localStorage.removeItem('token')
-            dispatch(logOut())
+            window.location.reload(true)
         }
         else{
             toast.error(res.message)

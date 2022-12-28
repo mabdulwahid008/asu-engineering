@@ -1,14 +1,11 @@
 import Loading from 'components/Loading/Loading';
 import React, { useState, useEffect } from 'react'
 import { FaRegEdit, FaTrash } from "react-icons/fa";
-import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { Card, CardHeader, CardBody, CardTitle, Table, Row, Col, Button } from "reactstrap";
-import { logOut, editCompany } from 'state/actions';
 
 function Companies() {
-    const dispatch = useDispatch()
     const [companpies, setCompanies] = useState(null);
     const [loading, setLoading] = useState(false);
 
@@ -26,7 +23,7 @@ function Companies() {
         }
         else if(response.status === 401){
             localStorage.removeItem('token')
-            dispatch(logOut())
+            window.location.reload(true)
         }
         else
             toast.error(res.message)
@@ -51,7 +48,7 @@ function Companies() {
       }
       else if(response.status === 401){
         localStorage.removeItem('token')
-        dispatch(logOut())
+        window.location.reload(true)
       }
       else{
         toast.error(res.message)
@@ -95,7 +92,7 @@ function Companies() {
                                 <td>{company.balance}</td>
                                 <td>{company.created_at? company.created_at?.substr(0,10): 'null'}</td>
                                 <td className='actions' style={{}}>
-                                    <Link to={`edit-company/${company.id}`}><FaRegEdit onClick={()=>{dispatch(editCompany(company))}}/> </Link>
+                                    <Link to={`edit-company/${company.id}`}><FaRegEdit /> </Link>
                                     <FaTrash onClick={!loading?()=>deleteCompany(company.id): ''}/>
                                 </td>
                             </tr>

@@ -1,20 +1,20 @@
-import React, { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
+import React, { useEffect, useRef, useState } from 'react'
 import { toast } from 'react-toastify'
-import { logOut } from 'state/actions'
 import { Button, Card, CardBody, CardHeader, CardTitle, Col, Row, Table } from 'reactstrap'
 import Loading from 'components/Loading/Loading'
 import { Link } from 'react-router-dom'
+import { PDFDownloadLink } from '@react-pdf/renderer'
+import PDFfile from 'components/PDFfile/PDFfile'
 
 function Invoices() {
     const [invoices, setInvoices] = useState(null)
     const [totalRecords, setTotalRecords] = useState(0)
     const [page, setPage] = useState(1)
     const [totalPages, setTotalPages] = useState()
+    const [invoice, setInvoice] = useState(null)
 
 
-    const [records, setRecords] = useState(0)
-    const dispatch = useDispatch()
+    const [records, setRecords] = useState(50)
 
     const fetchInvoices = async() => {
         const response = await fetch(`${process.env.REACT_APP_BACKEND_HOST}invoices?offset=${records}&records=10`,{
@@ -34,13 +34,34 @@ function Invoices() {
         }
         else if(response.status === 401){
           localStorage.removeItem('token')
-            dispatch(logOut())
+          window.location.reload(true)
         }
         else if(response.status === 500){
             toast.error('Server Error')
         }
         else
           toast.error(res.message)
+    }
+
+    const fecthInvoice = async( invoice_id ) =>{
+        const response = await fetch(`${process.env.REACT_APP_BACKEND_HOST}invoices/${invoice_id}`,{
+            method: 'GET',
+            headers: {
+                'Content-Type': 'Application/json',
+                "Authorization" : localStorage.getItem('token')
+            },
+        })
+        const res = await response.json()
+
+        if(response.status === 200){
+            setInvoice(res)
+        }
+        else if(response.status === 401){
+            localStorage.removeItem('token')
+            window.location.reload(true)
+        }
+        else
+            toast.error(res.message)
     }
 
     const nextPage = ()=>{
@@ -63,8 +84,15 @@ function Invoices() {
             fetchInvoices()
     }, [invoices, records])
 
+    const ref = useRef()
+    useEffect(() => {
+        if(invoice)
+            // ref.current.click()
+            console.log(invoice);
+    }, [invoice])
+
     
-  return (
+  return (<>
     <div className='content'>
         <Row>
             <Col md='12'>
@@ -99,7 +127,7 @@ function Invoices() {
                                             <td>{invoice.company_name}</td>
                                             <td>{invoice.total}</td>
                                             <td>{invoice.created_at.substr(0,10)}</td>
-                                            <Button>Download</Button>
+                                            <Button onClick={()=>{fecthInvoice(invoice.id)}}>Download</Button>
                                         </tr>
                            })}
                         </tbody>
@@ -117,8 +145,17 @@ function Invoices() {
                 </Card>
             </Col>
         </Row>
-
     </div>
+    {invoice && console.log(invoice) && <>
+    <PDFDownloadLink document={<PDFfile invoice={invoice}/> } fileName="invoice">
+        {({loading}) => (<Button color='primary' ref={ref} style={{width:'100%'}}>{loading? 'Generating' : 'Download PDF'}</Button> )}
+    </PDFDownloadLink>
+    <div style={{display:'none'}}>
+
+    <PDFfile invoice={invoice}/>
+    </div>
+    </>}
+    </>
   )
 }
 

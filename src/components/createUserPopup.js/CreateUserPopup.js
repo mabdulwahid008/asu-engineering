@@ -1,14 +1,11 @@
 import React, { useState } from 'react'
 import './CreateUserPopup.css'
 import { Button, Card, CardBody, CardHeader, CardTitle, Form, FormGroup, Input } from 'reactstrap'
-import { useDispatch } from 'react-redux'
-import { logOut } from 'state/actions'
 import { toast } from 'react-toastify'
 
 function CreateUserPopup({ setaddCustomer }) {
     const [loading, setLoading] = useState(false)
     const [customer, setcustomer] = useState({name: '', phone: 0, address: ''})
-    const dispatch = useDispatch()
     
     const onChange = ( e ) => {
         setcustomer({...customer, [e.target.name]: e.target.value})
@@ -34,7 +31,7 @@ function CreateUserPopup({ setaddCustomer }) {
         }
         else if(response.status === 401){
             localStorage.removeItem('token')
-            dispatch(logOut())
+            window.location.reload(true)
         }
         else{
             toast.error(res.message)

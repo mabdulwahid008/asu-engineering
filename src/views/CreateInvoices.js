@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import { Button, Card, CardBody, CardHeader, Col, Form, FormGroup, Input, Row } from 'reactstrap'
 import Select from 'react-select'
 import { useDispatch, useSelector } from 'react-redux'
-import { logOut } from 'state/actions'
 import { toast } from 'react-toastify'
 import { SelectProduct } from 'state/actions'
 import ProductSelect from 'components/ProductSelect/ProductSelect'
@@ -61,7 +60,7 @@ function CreateInvoices() {
             setCustomers(res)
         else if(response.status === 401){
             localStorage.removeItem('token')
-            dispatch(logOut())
+            window.location.reload(true)
         }
         else
             toast.error(res.message)
@@ -80,7 +79,7 @@ function CreateInvoices() {
         }
         else if(response.status === 401){
             localStorage.removeItem('token')
-            dispatch(logOut())
+            window.location.reload(true)
         }
         else
             toast.error(res.message)
@@ -99,7 +98,7 @@ function CreateInvoices() {
             setContractors(res)
         else if(response.status === 401){
             localStorage.removeItem('token')
-            dispatch(logOut())
+            window.location.reload(true)
         }
         else
             toast.error(res.message)
@@ -118,7 +117,7 @@ function CreateInvoices() {
             setProducts(res)
         else if(response.status === 401){
           localStorage.removeItem('token')
-            dispatch(logOut())
+          window.location.reload(true)
         }
         else
           toast.error(res.message)
@@ -194,7 +193,7 @@ function CreateInvoices() {
             }
             else if(response.status === 401){
                 localStorage.removeItem('token')
-                dispatch(logOut())
+                window.location.reload(true)
             }
             else if(response.status === 500){
                 toast.error('Server Error')

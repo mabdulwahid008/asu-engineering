@@ -8,14 +8,14 @@ import invoiceContractor from './invoiceContractor'
 import invoiceCompany from './invoiceCompany'
 
 const reducers = combineReducers({
-    authenticateUser,
-    editProduct,
-    editCompany,
+    // authenticateUser,
+    // editProduct,
+    // editCompany,
 
     invoiceProducts,
-    invoiceCustomer,
-    invoiceContractor,
-    invoiceCompany
+    // invoiceCustomer,
+    // invoiceContractor,
+    // invoiceCompany
 })
 
 export default reducers;

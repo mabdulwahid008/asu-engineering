@@ -1,13 +1,10 @@
 import Loading from 'components/Loading/Loading';
 import React, { useState, useEffect } from 'react'
-import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 import { Card, CardBody, CardHeader, CardTitle, Col, Row,  FormGroup, Form, Input, Button} from 'reactstrap'
-import { logOut } from 'state/actions';
 
 function AddProducts() {
     
-    const dispatch = useDispatch()
 
     const [companpies, setCompanies] = useState(null);
     const [loading, setLoading] = useState(false);
@@ -26,7 +23,7 @@ function AddProducts() {
             setCompanies(res)
         else if(response.status === 401){
             localStorage.removeItem('token')
-            dispatch(logOut())
+            window.location.reload(true)
         }
         else
             toast.error(res.message)
@@ -47,8 +44,6 @@ function AddProducts() {
             }
             product.rates.push(obj)
         }
-
-        // axios.post(`${process.env.REACT_APP_BACKEND_HOST}products}`, )
         const response = await fetch(`${process.env.REACT_APP_BACKEND_HOST}products`,{
             method: 'POSt',
             headers: {
@@ -68,7 +63,7 @@ function AddProducts() {
         }
         else if(response.status === 401){
             localStorage.removeItem('token')
-            dispatch(logOut())
+            window.location.reload(true)
         }
         else{
             toast.error(res.message)
