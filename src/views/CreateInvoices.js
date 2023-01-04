@@ -44,6 +44,8 @@ function CreateInvoices() {
 
     // for ading-customer popup
     const [addCustomer, setaddCustomer] = useState(false)
+    // for tracking whether the customer added or not
+    const [newCustomerAdded, setNewCustomerAdded] = useState(false)
 
     // fetching APIs
     const fetchCustomers = async() => {
@@ -262,9 +264,12 @@ function CreateInvoices() {
             }
             setProductOptions(product)
         }
-    }, [customers, companies, contractors, products])
+    }, [customers, companies, contractors, products, newCustomerAdded])
 
     useEffect(() => {
+        setNewCustomerAdded(false)
+        setCustomerOptions(null)
+        
         fetchCustomers();
         getCompanpies();
         getContractors();
@@ -273,7 +278,7 @@ function CreateInvoices() {
         return(()=>{
             dispatch(removeAllProducts())
         })
-    }, [])
+    }, [newCustomerAdded])
   return (<>
     <div className='content'>
         <Form onSubmit={proceed}>
@@ -393,7 +398,7 @@ function CreateInvoices() {
             </Row>
         </Form>
     </div>
-    {addCustomer && <CreateUserPopup setaddCustomer={setaddCustomer}/>}
+    {addCustomer && <CreateUserPopup setaddCustomer={setaddCustomer} setNewCustomerAdded={setNewCustomerAdded}/>}
     {invoicePopup && <PopupInvoice setInvoicePopup={setInvoicePopup} contractor_id={invoice.contractor} />}
 </>
   )

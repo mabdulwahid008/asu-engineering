@@ -28,7 +28,7 @@ function Invoices() {
         
         if(response.status === 200){
             setInvoices(res.data)
-            console.log(res);
+            // console.log(res);
             setTotalRecords(res.total_records)
             let pages = Math.ceil(res.total_records / 10)
             setTotalPages(pages)

@@ -4,7 +4,7 @@ import ReactSelect from 'react-select'
 import { toast } from 'react-toastify'
 import { Button, Card, CardBody, CardHeader, CardTitle, Col, Form, FormGroup, Input, Row } from 'reactstrap'
 
-function PayPopup({ setPopup }) {
+function PayPopup({ setPopup, setPaymentAdded }) {
     let id = localStorage.getItem('id');
 
     const [loading, setLoading] = useState(false)
@@ -92,8 +92,10 @@ function PayPopup({ setPopup }) {
         })
         const res = await response.json();
         
-        if(response.status === 201)
+        if(response.status === 201){
+            setPaymentAdded(true)
             toast.success(res.message)
+        }
         else if(response.status === 401){
             localStorage.removeItem('token')
             window.location.reload(true)

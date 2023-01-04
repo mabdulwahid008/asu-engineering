@@ -3,7 +3,7 @@ import './CreateUserPopup.css'
 import { Button, Card, CardBody, CardHeader, CardTitle, Form, FormGroup, Input } from 'reactstrap'
 import { toast } from 'react-toastify'
 
-function CreateUserPopup({ setaddCustomer }) {
+function CreateUserPopup({ setaddCustomer, setNewCustomerAdded }) {
     const [loading, setLoading] = useState(false)
     const [customer, setcustomer] = useState({name: '', phone: 0, address: ''})
     
@@ -26,6 +26,7 @@ function CreateUserPopup({ setaddCustomer }) {
         const res = await response.json()
        
         if(response.ok){
+            setNewCustomerAdded(true)
             setcustomer({name: '', phone: 0, balance: ''})
             toast.success(res.message)
         }

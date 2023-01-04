@@ -12,6 +12,9 @@ function Payments() {
     const from = `${new Date().getFullYear()}-${new Date().getMonth()+1}-1`
     const to =`${new Date().getFullYear()}-${new Date().getMonth()+1}-${new Date().getDate()}`
 
+    // for tracking whether the payment added or not
+    const [paymentAdded, setPaymentAdded] = useState(false)
+
     const [filterPayments, setfilterPayments] = useState({fromDate: from, toDate: to, type:''})
 
     const onChange =( e ) => {
@@ -56,8 +59,11 @@ function Payments() {
     }
 
     useEffect(() => {
+        setPaymentAdded(false)
+        setPayments(null)
+
       fetchPaymemts()
-    }, [])
+    }, [paymentAdded])
     
   return (<>
     <div className='content'>
@@ -138,7 +144,7 @@ function Payments() {
             </Col>
         </Row>
     </div>
-    {popup && <PayPopup setPopup={setPopup}/>}
+    {popup && <PayPopup setPopup={setPopup} setPaymentAdded={setPaymentAdded}/>}
   </>)
 }
 
