@@ -33,7 +33,7 @@ function Login() {
     }
   return (
     <div>
-        <Row style={{display:'flex', margin:0, justifyContent: 'center', alignItems:'center', overflow: 'hiden', height: 627, width: '100%', background: '#f4f3ef'}}>
+        <Row style={{display:'flex', margin:0, justifyContent: 'center', alignItems:'center', overflow: 'hiden', height: '100vh', width: '100vw', background: '#f4f3ef'}}>
             <Col md="4">
                 <Card>
                     <CardHeader>
